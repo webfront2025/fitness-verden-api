@@ -124,32 +124,20 @@
 
 import { serverFetch } from "@/lib/server-fetch";
 import BurgerMenu from "@/components/BurgerMenu";
-// import BackButton from "@/components/BackButton";
 import Image from "next/image";
 import { Triangle } from 'lucide-react';
-// import { API_BASE_URL } from "@/constants"
 import Link from 'next/link';
 import SignupButton from "@/components/SignupButton";
 import { currentUser } from "@/lib/currentUser";
 import Rating from "@/components/Rating";
-// import TrainerCard from "@/components/TrainerCard";
 
 export default async function generateMetadata({ params }) {
 	const aktId = (await params).id
-console.log(aktId);
-
-
 // Fetch classe detailer / side med detaljer for de enkelte hold
 // gammel kode
 const aktivites = await serverFetch(`http://localhost:4000/api/v1/classes/${aktId}`);
 const trainerId = aktivites.trainer.id;
-//   console.log(aktivites);
-// const rate = await fetch(`http://localhost:4000/api/v1/classes/${id}/ratings`)
-// const ratings = rate.json()
-//    console.log("trainerId",trainerIdd);
 const trainerFetch = await serverFetch(`http://localhost:4000/api/v1/trainers/${trainerId}`);
-// console.log(trainerFetch);
-
 const user = await currentUser();
 
 const userIsSignedUp = user?.classes?.some((cls) => cls.id == aktId);
@@ -165,7 +153,7 @@ return (
         />
         <div className='absolute inset-0 flex flex-col justify-between'>
                     <div className='w-full flex justify-between p-4'>
-                        <Link href='/home' className="text-red-300 flex gap-2 items-center">
+                        <Link href='/classes' className="text-red-300 flex gap-2 items-center">
                             <Triangle size={20} fill="#F4A88E" className=" rotate-[270deg]" />
                             Back
                         </Link>
@@ -184,7 +172,7 @@ return (
                         </div>
 
                         <div className=' row-start-2 col-start-2 justify-self-end mt-2'>
-                            <SignupButton classId={aktId} classDay={aktivites.classDay} user={user} userIsSignedUp={userIsSignedUp} />
+                            <SignupButton classId={aktId} classDay={aktivites.classDay} user={user} userIsSignedUp={userIsSignedUp} singleClass={aktivites} />
                             
                         </div>
                     </div>

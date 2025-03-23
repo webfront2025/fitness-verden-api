@@ -33,17 +33,19 @@ export default function ClassesCard({ activity }) {
   }
 
   return (
-    <article className="w-[33vw] h-full flex flex-col justify-between">
+    <article className="w-[33vw] h-[220px] flex flex-col justify-between">
       <Link href={`/classes/${activity.id}`}>
+      <div className="w-[15em]  h-[6.5em] my-[1em]">
         <Image 
           src={activity.asset?.url || "/default-image.jpg"} 
-          width={500} 
+          width={300} 
           height={300} 
           alt="people training" 
           className="w-[33vw] h-[120px] rounded-2xl"
           priority 
         />
-        <h2 className="text-[16px]">{activity.className}</h2>
+         </div>
+        <h2 className="text-[0.9em] font-semibold">{activity.className}</h2>-
       </Link>
       <Ratings classId={activity.id} />
     </article>

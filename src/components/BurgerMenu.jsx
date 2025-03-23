@@ -9,9 +9,24 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
+import { getCookie, deleteCookie } from 'cookies-next';
 
 export default function BurgerMenu() {
+  const token = getCookie("fitness_token");
+  const userId = getCookie("fitness_uid");
+  
+
   const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
+
+  function handleLogOut() {
+    deleteCookie("fitness_token");
+    deleteCookie("fitness_uid");    
+    setIsOpen(false);
+    router.push("/loginForm"); 
+  }
 
   return (
     <>
@@ -24,8 +39,8 @@ export default function BurgerMenu() {
 
       {/* Sidebar */}
       <div
-        className={`absolute inset-0 bg-white flex flex-col w-full h-[100vh] z-30 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`absolute inset-0 bg-white flex flex-col w-full h-[100vh] z-30 
+          ${isOpen ? "translate-x-0" : "-translate-x-full"
         }`}>
         {/* Close Button (X) */}
         <button
@@ -42,12 +57,22 @@ export default function BurgerMenu() {
           <Link href="/search" onClick={() => setIsOpen(false)}>
             Search
           </Link>
+          {token ? (
           <Link href="/kalender" onClick={() => setIsOpen(false)}>
             My Schedule
           </Link>
+          ): (
+            <></>
+          )}
+          {token && userId ? (
+            <Link href="" onClick={handleLogOut}>
+            Log out
+          </Link>
+          ) : (
           <Link href="/loginForm" onClick={() => setIsOpen(false)}>
             Login
           </Link>
+          )}
         </nav>
       </div>
       {/* Overlay (Click outside to close) */}
@@ -56,6 +81,7 @@ export default function BurgerMenu() {
           className="fixed inset-0 bg-black opacity-50"
           onClick={() => setIsOpen(false)}></div>
       )}
+       {isOpen && <div className="fixed inset-0 bg-black opacity-50" onClick={() => setIsOpen(false)}></div>}
     </>
   );
 }

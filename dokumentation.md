@@ -1,6 +1,6 @@
 # 📌 Dokumentation for Fitness Verden
 
-**Forfatter:** Mansoureh Safarian Toosi, WU11  
+**Forfatter:**  
 
 ---
 
@@ -69,10 +69,6 @@ En log-ind formular
 •Valgfri opgave C – Automatiseret deployment
 Information om brugere, hold og instruktører kommer fra et API, som er til rådighed.
 APIet kan klones fra GitHub her: **(https://github.com/rts-cmk-opgaver/trainer-api)**
-
-## min planlægning
-![Planlægning billede](/public/plan.jpg)
-
 
 ## Kode-eksempel
 Jeg har valgt et eksempel fra login 

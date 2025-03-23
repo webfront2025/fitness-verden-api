@@ -9,6 +9,7 @@ export async function signUp(formState, formData) {
     const firstname = formData.get('firstname')
     const lastname = formData.get('lastname')
     const birthdate = formData.get('birthdate')
+    
 
     const schema = z.object({
         username: z.string().min(1, { message: "Username is required" }),

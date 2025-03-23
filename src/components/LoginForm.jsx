@@ -150,7 +150,7 @@ export default function LoginForm() {
                     name="username"
                     ref={usernameRef}
                     placeholder="User Name"
-                    className={`p-4 bg-gray-500 text-black text-lg rounded placeholder:text-black ${formState?.errors?.username?._errors && 'border-t-2 border-x-2 rounded-b-none border-red-500'}`}
+                    className={`p-4 bg-gray-400 text-black text-lg rounded placeholder:text-black ${formState?.errors?.username?._errors && 'border-t-2 border-x-2 rounded-b-none border-red-500'}`}
                 />
                 {formState?.errors?.username?._errors &&
                     <span className="text-red-500 text-lg border-b-2 border-x-2 border-red-500 bg-black/70 pl-2 rounded-b">{formState?.errors?.username._errors}</span>
@@ -162,14 +162,14 @@ export default function LoginForm() {
                     name="password"
                     ref={passwordRef}
                     placeholder="Password"
-                    className={`p-4 bg-gray-500 text-black text-lg rounded placeholder:text-black ${formState?.errors?.password?._errors && 'border-t-2 border-x-2 rounded-b-none border-red-500'}`}
+                    className={`p-4 bg-gray-400 text-black text-lg rounded placeholder:text-black ${formState?.errors?.password?._errors && 'border-t-2 border-x-2 rounded-b-none border-red-500'}`}
                 />
                 {formState?.errors?.password?._errors &&
                     <span className="text-red-500 text-lg border-b-2 border-x-2 border-red-500 bg-black/70 pl-2 rounded-b">{formState?.errors?.password._errors}</span>
                 }
             </div>
 
-            <button disabled={isPending} type="submit" className={` text-black bg-gray-700 text-lg rounded-lg px-20 py-4 shadow-2xl ${isPending ? 'bg-gray' : 'bg-purple'}`}>
+            <button disabled={isPending} type="submit" className={` text-black bg-gray-600 text-lg rounded-lg px-20 py-4 shadow-2xl ${isPending ? 'bg-gray' : 'bg-purple'}`}>
                 {isPending ? 'Logging in...' : 'Log in'}
             </button>
 
@@ -178,8 +178,8 @@ export default function LoginForm() {
             } */}
 
             <div className="text-center pt-2">
-                <p className="text-lg/4 my-2">Har du ingen bruger? </p>
-                <Link href="/register" className="underline text-lg/3">Opret dig her</Link>
+                <p className="text-lg/4 my-2">Do not have a user? </p>
+                <Link href="/register" className="underline text-lg/3">Register here</Link>
             </div>
 
         </form>

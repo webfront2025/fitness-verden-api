@@ -44,7 +44,7 @@ export default function Home() {
 
         {/* Call-to-Action Button */}
         <div className="absolute bottom-5 right-[-6rem] transform -translate-x-1/2">
-          <Link href="/home">
+          <Link href="/classes">
             <button className="rounded-lg  bg-white text-black px-6 py-3 text-lg
              font-semibold shadow-xl hover:bg-gray-200 transition-all duration-300">
               Start Training

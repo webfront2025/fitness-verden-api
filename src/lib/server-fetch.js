@@ -12,4 +12,23 @@ export async function serverFetch(url) {
 		throw new Error(error)
 	}
 }
+
+export async function signupUserToClass({ classId, action, userId, token }) {
+	try {
+	  const response = await fetch(
+		`http://localhost:4000/api/v1/users/${userId}/classes/${classId}`,
+		{
+		  method: action,
+		  headers: {
+			Authorization: "Bearer " + token,
+			"content-type": "application/json",
+		  },
+		}
+	  );  
+	  // console.log("response", response);
+	  return response;
+	} catch (error) {
+	  throw new Error(error);
+	}
+  }
     

@@ -1,63 +1,21 @@
-// import Image from "next/image"
 
-// export default async function TrainerCard() {
-//     const response = await fetch(`http://localhost:4000/api/v1/trainers`)
-//     const trainer = await response.json();
-//     console.log("trainer",trainer);
-    
-//     return (
-//         <article className="flex gap-4">
-// {trainer.map((aktiv) => (
-//               <div className="flex ">
-//                 {/* <TrainerCard key={aktiv.id} aktiv={aktiv} /> */}
-//                 <TrainerCard />
-//                 </div>
-//               ))}
-
-//             <Image src={trainer.asset.url} width={2560} height={3369} alt="trainer" className="w-32 h-32 rounded-lg" />
-//             <h2 className="text-base">{trainer.trainerName}</h2>
-//         </article>
-
-
-//     )
-// }
-
-// import Image from "next/image"
-
-// export default async function TrainerCard() {
-//     const response = await fetch(`http://localhost:4000/api/v1/trainers`)
-//     const trainer = await response.json();
-//     console.log("trainer",trainer);
-    
-//     return (
-//         <article className="flex gap-4">
-// {trainer.map((aktiv) => (
-//               <div className="flex ">
-//                 {/* <TrainerCard key={aktiv.id} aktiv={aktiv} /> */}
-//                 <TrainerCard />
-//                 </div>
-//               ))}
-
-//             <Image src={trainer.asset.url} width={2560} height={3369} alt="trainer" className="w-32 h-32 rounded-lg" />
-//             <h2 className="text-base">{trainer.trainerName}</h2>
-//         </article>
-
-
-//     )
-// }
+// components/TrainerCard.jsx
 import Image from "next/image"
 
 export default async function TrainerCard({id}) {
-    const trainer = await fetch(`http://localhost:4000/api/v1/trainers/${id}`).then(r => r.json())
+    const trainer = await fetch(`http://localhost:4000/api/v1/trainers/${id}`)
+    const trainerDetails = await trainer.json();
     return (
         <article className="flex gap-4">
-            <Image src={trainer?.asset?.url} width={250} height={300} alt="trainer" className="w-32 h-32 rounded-lg" />
-            <h2 className="text-base">{trainer.trainerName}</h2>
+            <Image src={trainerDetails?.asset?.url || "/placeholder.jpg"} 
+            width={250} height={300}  alt="trainerName"
+            className="w-28 h-28 rounded-lg object-cover" />
+            <h2 className="text-base">{trainerDetails.trainerName}</h2>
         </article>
-
-
     )
 }
+
+
 
 // 								contexts/ContProvider.jsx
 

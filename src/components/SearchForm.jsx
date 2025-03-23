@@ -5,34 +5,34 @@ import { useState } from "react";
 import Image from "next/image";
 import search from "../../public/search.png";
 import { redirect } from "next/navigation";
-import { useRouter } from "next/navigation";
+import {FaTimes} from "react-icons/fa";
+
 export default function SearchForm() {
 	const [searchQuery, setSearchQuery] = useState("");
-	// const router = useRouter(); 
 
 	function handelSearch(event) {
 		event.preventDefault()
-		redirect("/search?searchResult="+searchQuery)
-		// router.push(`/search?searchResult=${searchQuery}`);
-	}
+		redirect("/search?search="+searchQuery)
+	}function removeInputText(){
+		setSearchQuery("")
+		redirect("/search")
+	  }
     	return (
     		<form onSubmit={handelSearch} className="py-6  w-[85%] mx-auto relative" >
-    			{/* <p className="text-lg font-semibold mb-4">Søg </p> */}
-    			{/* <label className="flex flex-col" htmlFor="keyword">
-    			</label> */}
 				<div className="relative flex justify-center  w-full">
-
     			<input
     				type="search"
     				name="search"
-    				// placeholder="Søg på fx. aktiviter, timer og eller lignende"
-    				className="bg-gray-400 text-white opacity-50  border rounded-sm py-1 w-[85%]"
+					placeholder="Search classes"
+					autoComplete="off"    				
+					className="bg-gray-400 text-white opacity-50  border rounded-sm py-1 w-[85%]"
     				value={searchQuery}
 					onChange={(e) => setSearchQuery(e.target.value)}
     			/>
-    			{/* <button type="submit" className="bg-[#162A41] text-white ml-[1%] py-1 w-[14%] rounded-sm">Søg</button> */}
 				  <Image src={search} width={22} height={20} alt="search" 
-				  className="absolute right-7 top-1/2 transform -translate-y-1/2 invert"/>
+				  className="absolute left-[13em] top-[1.1em] transform -translate-y-1/2 invert"/>
+				  <FaTimes onClick={removeInputText}
+        		  className="absolute top-[1em] right-[1.7em] text-[1.2em] text-gray-400 transform -translate-y-1/2 invert "/>
 				</div>
 
     		</form>

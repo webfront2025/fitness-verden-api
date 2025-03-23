@@ -46,9 +46,13 @@ import { currentUser } from "@/lib/currentUser";
 import BurgerMenu from "@/components/BurgerMenu";
 import { Triangle } from 'lucide-react';
 
+export const metadata = {
+    title: "My Schedule",
+    description: "My scheduled classes.",
+  };
+  
 export default async function MySchedule() {
-    const user = await currentUser()
-
+    const currentUserData = await currentUser()
     return (
         <main className="px-4">
             <div className="relative w-full h-[10vh] flex flex-col">
@@ -64,11 +68,13 @@ export default async function MySchedule() {
                     </div>
             <h1 className="text-3xl text-center">My Schedule</h1>
             <ul>
-                {user.classes.map(cls => (
-                    <li key={cls.id} className="w-full border-b border-black border-dashed py-4">
-                        <Link href={`/classes/${cls.id}`}>
-                            <p className="flex justify-between text-sm pb-4">{cls.classDay} <span>{cls.classTime}</span></p>
-                            <h2 className="text-lg/6">{cls.className}</h2>
+                {!currentUserData
+        ? "No Schedule found for userId"
+        :  currentUserData.classes.map(schedule => (
+                    <li key={schedule.id} className="w-full border-b border-black border-dashed py-4">
+                        <Link href={`/classes/${schedule.id}`}>
+                            <p className="flex justify-between text-sm pb-4">{schedule.classDay} <span>{schedule.classTime}</span></p>
+                            <h2 className="text-lg/6">{schedule.className}</h2>
                         </Link>
                     </li>
                 ))}

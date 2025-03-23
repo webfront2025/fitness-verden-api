@@ -12,7 +12,7 @@ export default  function BackButton(){
       <a
         onClick={() => router.back()}
         className="flex gap-2 items-center">
-        <Triangle size={20} fill="#808080" className=" rotate-[270deg]" />
+        <Triangle size={20} fill="#F4A88E" className=" rotate-[270deg]" />
       </a>
     </>
   );
