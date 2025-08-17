@@ -39,6 +39,6 @@ export function ContProvider({ children }) {
     )
 }
 
-export function conAuth() {
+export function useAuth() {
     return useContext(ContContext)
 }
