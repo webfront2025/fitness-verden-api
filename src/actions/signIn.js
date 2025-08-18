@@ -4,6 +4,7 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { z } from "zod"
+import { AUTH_TOKEN_URL } from "@/constants"
 
 export default async function signIn(prevState, formData) {
 	const username = formData.get("username")
@@ -25,7 +26,7 @@ export default async function signIn(prevState, formData) {
 	}
 
 	try {
-		const response = await fetch("http://localhost:4000/auth/token", {
+		const response = await fetch(AUTH_TOKEN_URL, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"

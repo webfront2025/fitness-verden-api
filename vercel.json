@@ -1,0 +1,9 @@
+{
+  "framework": "nextjs",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build",
+  "regions": ["fra1"],
+  "env": {
+    "NEXT_TELEMETRY_DISABLED": "1"
+  }
+}
