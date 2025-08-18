@@ -11,12 +11,8 @@ import { Triangle } from 'lucide-react';
 // gammel kode
 export default async function getAllClasses() {
   const classes = await serverFetch(CLASSES_URL);
-  // console.log("classsss", classes);
-
-  const randomNumber = Math.floor(Math.random() * 3);
-  const randomImage = await serverFetch(
-    `${CLASSES_URL}/${randomNumber}`
-  );
+  const randomIndex = Math.floor(Math.random() * (classes?.length || 1));
+  const randomClass = classes?.[randomIndex];
 
   return (
     <>
@@ -33,11 +29,11 @@ export default async function getAllClasses() {
     <main className="w-full">
       
       <section className="p-2">
-        <Link href={`/classes/${randomImage?.id}`}>
+        <Link href={`/classes/${randomClass?.id || ''}`}>
           <div className="relative w-full h-[40vh]">
-          {randomImage?.asset?.url ? (
+          {randomClass?.asset?.url ? (
   <Image
-    src={randomImage.asset.url}
+    src={randomClass.asset.url}
     width={500}
     height={400}
     alt="random-photo"
@@ -52,7 +48,7 @@ export default async function getAllClasses() {
 
 
             <h2 className="absolute bottom-4 left-4 text-xl leading-[4rem] text-white font-bold">
-              {randomImage?.className}
+              {randomClass?.className || 'Class'}
             </h2>
           </div>
         </Link>
@@ -63,7 +59,7 @@ export default async function getAllClasses() {
         <div className="flex overflow-x-auto gap-4 w-full p-4 no-scrollbar">
           {/* <div className="flex space-x-3 p-3"> */}
           {classes
-            .filter((_, index) => index !== randomNumber - 1) // Remove the random one
+            .filter((_, index) => index !== randomIndex)
             .map((activity) => (
               <div key={activity.id}  className="flex-shrink-0 min-h-fit space-x-3 p-3">
                 <ClassesCard key={activity.id} activity={activity} />
