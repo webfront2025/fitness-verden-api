@@ -7,6 +7,7 @@ import { serverFetch } from "@/lib/server-fetch";
 import BurgerMenu from "@/components/BurgerMenu";
 import Link from "next/link";
 import { Triangle } from "lucide-react";
+import { CLASSES_URL, TRAINERS_URL } from "@/constants";
 
 export const metadata = {
   title: "Search",
@@ -16,8 +17,8 @@ export const metadata = {
 export default async function Search({ searchParams }) {
   
   let searchQuery = (await searchParams).search;
-  let alleAktiviter = await serverFetch("http://localhost:4000/api/v1/classes");
-  let alleTrainers = await serverFetch("http://localhost:4000/api/v1/trainers");
+  let alleAktiviter = await serverFetch(CLASSES_URL);
+  let alleTrainers = await serverFetch(TRAINERS_URL);
 console.log("ssearchh:",searchQuery);
 
 

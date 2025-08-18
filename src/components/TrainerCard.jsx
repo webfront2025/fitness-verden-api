@@ -1,9 +1,10 @@
 
 // components/TrainerCard.jsx
 import Image from "next/image"
+import { TRAINERS_URL } from "@/constants"
 
 export default async function TrainerCard({id}) {
-    const trainer = await fetch(`http://localhost:4000/api/v1/trainers/${id}`)
+    const trainer = await fetch(`${TRAINERS_URL}/${id}`, { cache: 'no-store' })
     const trainerDetails = await trainer.json();
     return (
         <article className="flex gap-4">
@@ -17,7 +18,7 @@ export default async function TrainerCard({id}) {
 
 
 
-// 								contexts/ContProvider.jsx
+// 										contexts/ContProvider.jsx
 
 // 'use client'
 // import { createContext, useContext, useEffect, useState } from "react"

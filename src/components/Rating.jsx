@@ -1,5 +1,6 @@
+import { CLASSES_URL } from "@/constants"
 export default async function Rating({classId}) {
-    const response = await fetch(`http://localhost:4000/api/v1/classes/${classId}/ratings`);
+    const response = await fetch(`${CLASSES_URL}/${classId}/ratings`, { cache: 'no-store' });
     const ratings = await response.json();
     // console.log("ratingssss",ratings);
     
