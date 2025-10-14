@@ -1,27 +1,100 @@
-export default async function Rating({classId}) {
-    const response = await fetch(`http://localhost:4000/api/v1/classes/${classId}/ratings`);
-    const ratings = await response.json();
-    // console.log("ratingssss",ratings);
-    
-    const helRating = ratings.reduce((acc, rating) => acc + rating.rating, 0);
-    const avRating = Math.round(helRating / ratings.length * 2) / 2;     
+'use client';
+
+import { useState, useEffect } from 'react';
+import { getCookie } from 'cookies-next';
+
+export default function Rating({ classId }) {
+    const [ratings, setRatings] = useState([]);
+    const [userRating, setUserRating] = useState(null);
+    const [hasRated, setHasRated] = useState(false);
+    const [averageRating, setAverageRating] = useState(0);
+
+    useEffect(() => {
+        fetchRatings();
+    }, [classId]);
+
+    async function fetchRatings() {
+        const response = await fetch(`http://localhost:4000/api/v1/classes/${classId}/ratings`);
+        const data = await response.json();
+        setRatings(data);
+
+        // Calculate average rating
+        const totalRating = data.reduce((acc, rating) => acc + rating.rating, 0);
+        const avg = data.length > 0 ? Math.round((totalRating / data.length) * 2) / 2 : 0;
+        setAverageRating(avg);
+
+        // Check if current user has rated
+        const userId = getCookie('fitness_uid');
+        const userHasRated = data.some(rating => rating.userId === userId);
+        setHasRated(userHasRated);
+        if (userHasRated) {
+            const userRating = data.find(rating => rating.userId === userId);
+            setUserRating(userRating.rating);
+        }
+    }
+
+    async function handleRatingSubmit(rating) {
+        if (hasRated) return;
+
+        const userId = getCookie('fitness_uid');
+        const token = getCookie('fitness_token');
+
+        try {
+            const response = await fetch(`http://localhost:4000/api/v1/classes/${classId}/ratings`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    rating,
+                    userId
+                })
+            });
+
+            if (response.ok) {
+                setHasRated(true);
+                setUserRating(rating);
+                fetchRatings(); // Refresh ratings
+            }
+        } catch (error) {
+            console.error('Error submitting rating:', error);
+        }
+    }
+
     return (
-          
-        <div className="flex w-2/3">
-          {[1, 2, 3, 4, 5].map(rating => {
-            const fullRat = avRating >= rating
-            const halRat = avRating >= rating - 0.5 && avRating< rating
-    
-            return (
-              
-              <div key={rating} className="w-5 h-5">
-              <div
-                className={`w-full h-full ${fullRat ? 'bg-red-300' : halRat ? 'bg-red-300 w-1/2' : 'bg-gray-300'}`}
-              />
+        <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+                <div className="flex">
+                    {[1, 2, 3, 4, 5].map(rating => {
+                        const fullRat = averageRating >= rating;
+                        const halRat = averageRating >= rating - 0.5 && averageRating < rating;
+                        
+                        return (
+                            <div key={rating} className="w-5 h-5">
+                                <div
+                                    className={`w-full h-full ${fullRat ? 'bg-red-300' : halRat ? 'bg-red-300 w-1/2' : 'bg-gray-300'}`}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+                <span className="text-sm text-gray-600">({ratings.length} ratings)</span>
             </div>
-            )
-          })}
+
+            {!hasRated && (
+                <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map(rating => (
+                        <button
+                            key={rating}
+                            onClick={() => handleRatingSubmit(rating)}
+                            className={`w-5 h-5 rounded-sm border ${
+                                userRating === rating ? 'bg-red-300' : 'bg-gray-200'
+                            }`}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
-        
-      )
+    );
 }

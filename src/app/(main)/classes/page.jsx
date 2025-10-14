@@ -28,7 +28,7 @@
 // //       <BurgerMenu />
 // //     </header>
 // //     <main className="w-full">
-      
+
 // //       <section className="p-2">
 // //         <Link href={`/classes/${randomImage.id}`}>
 // //           <div className="relative w-full h-[40vh]">
@@ -94,7 +94,7 @@
 //       <BurgerMenu />
 //     </header>
 //     <main className="w-full">
-      
+
 //       <section className="p-2">
 //         <Link href={`/classes/${randomImage.id}`}>
 //           <div className="relative w-full h-[40vh]">
@@ -136,73 +136,74 @@ import { serverFetch } from "@/lib/server-fetch";
 import { API_BASE_URL } from "@/constants";
 import Link from "next/link";
 import Image from "next/image";
-import { Triangle } from 'lucide-react';
+import { Triangle } from "lucide-react";
 
-// Fetch alle classer
+export const dynamic = "force-dynamic";
 // gammel kode
 export default async function getAllClasses() {
-  const classes = await serverFetch(`${API_BASE_URL}`);
+  
+  if (!API_BASE_URL) {
+    return <div>Missing NEXT_PUBLIC_API_URL</div>;
+  }
+  
+  // Fetch alle classer
+  const classes = await serverFetch("/classes");
   // console.log("classsss", classes);
 
-  const randomNumber = Math.floor(Math.random() * 3);
-  const randomImage = await serverFetch(
-    `http://localhost:4000/api/v1/classes/${randomNumber}`
-  );
+    // Pick a random class ---- vælg et tilfældig klasse
+  const randomNumber = Math.floor(Math.random() * classes.length);
+  const randomImage = await serverFetch(`/classes/${randomNumber}`);
 
   return (
     <>
-    <header className="flex flex-row justify-between items-center p-4">
-      {/* <BackButton /> */}
-      {/* <div className='w-full flex justify-between p-4'> */}
-                        <Link href='/home' className="text-gray-400 flex gap-2 items-center">
-                            <Triangle size={20} fill="#F4A88E" className=" rotate-[270deg]" />
-                            {/* Back */}
-                        </Link>
-      <h1 className="text-lg text-center">Popular classes</h1>
-      <BurgerMenu />
-    </header>
-    <main className="w-full">
-      
-      <section className="p-2">
-        <Link href={`/classes/${randomImage?.id}`}>
-          <div className="relative w-full h-[40vh]">
-          {randomImage?.asset?.url ? (
-  <Image
-    src={randomImage.asset.url}
-    width={500}
-    height={400}
-    alt="random-photo"
-    className="w-full h-full object-cover rounded-xl filter"
-  />
-) : (
-  <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center">
-    <span className="text-gray-500">No image available</span>
-  </div>
-)}
-
-
-
-            <h2 className="absolute bottom-4 left-4 text-xl leading-[4rem] text-white font-bold">
-              {randomImage?.className}
-            </h2>
-          </div>
+      <header className="flex flex-row justify-between items-center p-4">
+        {/* <BackButton /> */}
+        <Link href="/home" className="text-gray-400 flex gap-2 items-center">
+          <Triangle size={20} fill="#F4A88E" className=" rotate-[270deg]" />
         </Link>
-      </section>
-      <section>
-        {/* Horizontal Scroll Container */}
-        <h2 className="text-lg px-4">Classes for you</h2>
-        <div className="flex overflow-x-auto gap-4 w-full p-4 no-scrollbar">
-          {/* <div className="flex space-x-3 p-3"> */}
-          {classes
-            .filter((_, index) => index !== randomNumber - 1) // Remove the random one
-            .map((activity) => (
-              <div key={activity.id}  className="flex-shrink-0 min-h-fit space-x-3 p-3">
-                <ClassesCard key={activity.id} activity={activity} />
-              </div>
-            ))}
-        </div>
-      </section>
-    </main>
+        <h1 className="text-lg text-center">Popular classes</h1>
+        <BurgerMenu />
+      </header>
+      <main className="w-full">
+        <section className="p-2">
+          <Link href={`/classes/${randomImage?.id}`}>
+            <div className="relative w-full h-[40vh]">
+              {randomImage?.asset?.url ? (
+                <Image
+                  src={randomImage.asset.url}
+                  width={500}
+                  height={400}
+                  alt="random-photo"
+                  className="w-full h-full object-cover rounded-xl filter"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center">
+                  <span className="text-gray-500">No image available</span>
+                </div>
+              )}
+
+              <h2 className="absolute bottom-4 left-4 text-xl leading-[4rem] text-white font-bold">
+                {randomImage?.className}
+              </h2>
+            </div>
+          </Link>
+        </section>
+        <section>
+          {/* Horizontal Scroll Container */}
+          <h2 className="text-lg px-4">Classes for you</h2>
+          <div className="flex overflow-x-auto gap-4 w-full p-4 no-scrollbar">
+            {classes
+              .filter((_, index) => index !== randomNumber - 1) // Remove the random one
+              .map((activity) => (
+                <div
+                  key={activity.id}
+                  className="flex-shrink-0 min-h-fit space-x-3 p-3">
+                  <ClassesCard key={activity.id} activity={activity} />
+                </div>
+              ))}
+          </div>
+        </section>
+      </main>
     </>
   );
 }
