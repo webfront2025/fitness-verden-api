@@ -141,6 +141,7 @@ import { Triangle } from "lucide-react";
 export const dynamic = "force-dynamic";
 // gammel kode
 export default async function getAllClasses() {
+  // console.log("API_BASE_URL:", API_BASE_URL); 
   
   if (!API_BASE_URL) {
     return <div>Missing NEXT_PUBLIC_API_URL</div>;
@@ -148,6 +149,7 @@ export default async function getAllClasses() {
   
   try {
                  // Fetch alle classer--------- Fetch all classes
+    // console.log("Fetching from:", `${API_BASE_URL}/classes`); 
     const classes = await serverFetch("/classes");
     if (!Array.isArray(classes) || classes.length === 0) {
       return <div>No classes available.</div>;
@@ -156,7 +158,7 @@ export default async function getAllClasses() {
                   // vælg et tilfældig klasse---------Pick a random class by index, then use its real id
     const randomIndex = Math.floor(Math.random() * classes.length);
     const randomClass = classes[randomIndex];
-    const randomId = randomClass?.id ?? randomClass?._id ?? randomClass?.slug;
+    const randomId = randomClass?.id ;
     let randomImageData = null;
 
     if (randomId != null) {
@@ -186,11 +188,11 @@ export default async function getAllClasses() {
       </header>
       <main className="w-full">
         <section className="p-2">
-          <Link href={`/classes/${randomImage?.id}`}>
+          <Link href={`/classes/${randomId ?? ""}`}>
             <div className="relative w-full h-[40vh]">
-              {randomImage?.asset?.url ? (
+              {randomImageData?.asset?.url ? (
                 <Image
-                  src={randomImage.asset.url}
+                  src={randomImageData.asset.url}
                   width={500}
                   height={400}
                   alt="random-photo"
@@ -203,7 +205,7 @@ export default async function getAllClasses() {
               )}
 
               <h2 className="absolute bottom-4 left-4 text-xl leading-[4rem] text-white font-bold">
-                {randomImage?.className}
+                {randomImageData?.className ?? randomClass?.className ?? "Class"}
               </h2>
             </div>
           </Link>
@@ -213,10 +215,10 @@ export default async function getAllClasses() {
           <h2 className="text-lg px-4">Classes for you</h2>
           <div className="flex overflow-x-auto gap-4 w-full p-4 no-scrollbar">
             {classes
-              .filter((_, index) => index !== randomNumber - 1) // Remove the random one
+              .filter((_, index) => index !== randomIndex - 1) // Remove the random one
               .map((activity) => (
                 <div
-                  key={activity.id}
+                  key={activity.id ?? activity._id ?? `class-${Math.random()}`}
                   className="flex-shrink-0 min-h-fit space-x-3 p-3">
                   <ClassesCard key={activity.id} activity={activity} />
                 </div>

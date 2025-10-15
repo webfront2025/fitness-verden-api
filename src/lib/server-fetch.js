@@ -19,13 +19,17 @@ function buildUrl(pathOrUrl) {
 // fetch data/URL fra API
 export async function serverFetch(pathOrUrl, options = {}) {
 	 const url = buildUrl(pathOrUrl);
+	 console.log("serverFetch URL:", url);
 	try {
 		const response = await fetch(url, options)
 		if (!response.ok) {
       throw new Error(`Fetch failed ${response.status} ${response.statusText}`);
     }
-    return await response.json();
+    const data = await response.json();
+	console.log("Response data:", data); 
+	 return data;
   } catch (error) {
+	 console.error("serverFetch error:", error);
     throw new Error(error?.message || "Fetch error");
   }
 }
