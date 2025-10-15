@@ -83,7 +83,7 @@ export async function signUp(formState, formData) {
     })
 
     if (!response.ok) {
-        throw new Error('Failed to sign up',)
+        throw new Error('Failed to sign up')
     }
 
     const result = await response.json()
