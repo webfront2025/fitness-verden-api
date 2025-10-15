@@ -93,7 +93,7 @@ export async function signUp(formState, formData) {
         redirect('/loginForm')
     }
 
-}
+ }}
 
 // import z from 'zod'
 // import { redirect } from 'next/navigation'
