@@ -1,8 +1,8 @@
 'use client';
-
+// src/components/Rating.jsx
 import { useState, useEffect } from 'react';
 import { getCookie } from 'cookies-next';
-
+const API = process.env.NEXT_PUBLIC_API_URL;
 export default function Rating({ classId }) {
     const [ratings, setRatings] = useState([]);
     const [userRating, setUserRating] = useState(null);
@@ -10,11 +10,14 @@ export default function Rating({ classId }) {
     const [averageRating, setAverageRating] = useState(0);
 
     useEffect(() => {
+         if (!API || !classId) return;
         fetchRatings();
     }, [classId]);
 
     async function fetchRatings() {
-        const response = await fetch(`http://localhost:4000/api/v1/classes/${classId}/ratings`);
+        try {
+        const response = await fetch(`${API}/classes/${classId}/ratings`);
+        if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
         const data = await response.json();
         setRatings(data);
 
@@ -31,16 +34,21 @@ export default function Rating({ classId }) {
             const userRating = data.find(rating => rating.userId === userId);
             setUserRating(userRating.rating);
         }
+         } catch (e) {
+      console.error('Fetch ratings error', e);
+      setRatings([]);
+      setAverageRating(0);
+    }
     }
 
     async function handleRatingSubmit(rating) {
-        if (hasRated) return;
+        if (hasRated || !API) return;
 
         const userId = getCookie('fitness_uid');
         const token = getCookie('fitness_token');
 
         try {
-            const response = await fetch(`http://localhost:4000/api/v1/classes/${classId}/ratings`, {
+            const response = await fetch(`${API}/classes/${classId}/ratings`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

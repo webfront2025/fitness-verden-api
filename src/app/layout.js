@@ -16,8 +16,8 @@ const ubuntu = UbuntuFont({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={` bg-white  antialiased`}>{children}</body>
+     <html lang="en" className={ubuntu.className}>
+      <body className="bg-white antialiased">{children}</body>
     </html>
   );
 }

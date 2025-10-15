@@ -25,20 +25,24 @@ export default async function signIn(prevState, formData) {
 	}
 
 	try {
-		const response = await fetch("http://localhost:4000/auth/token", {
+		const base = (process.env.AUTH_API_URL || "").replace(/\/+$/, "");
+    if (!base) {
+      return { formData: { username, password }, error: "Missing AUTH_API_URL" };
+    }
+		const response = await fetch(`${base}/auth/token`, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
+			headers: {"Content-Type": "application/json"},
 			body: JSON.stringify({ username, password })
 		})
 
 		if (response.status === 400) {
-			return {
-				formData: { username, password },
-				error: "Forkert brugernavn eller adgangskode"
+			return {formData: { username, password },
+					error: "Forkert brugernavn eller adgangskode"
 			}
-		}
+		 }
+    if (!response.ok) {
+      return { formData: { username, password }, error: `Login failed (${response.status})` };
+    }
 
 		const data = await response.json()
 
@@ -49,5 +53,6 @@ export default async function signIn(prevState, formData) {
 		throw new Error(error)
 	}
 	redirect("/kalender")
+	
 }
 

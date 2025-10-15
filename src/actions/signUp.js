@@ -10,7 +10,13 @@ export async function signUp(formState, formData) {
     const lastname = formData.get('lastname')
     const birthdate = formData.get('birthdate')
     
-
+  if (password !== confirmPassword) {
+    return {
+      success: false,
+      formData: { username, firstname, lastname, birthdate },
+      errors: { password: { _errors: ["Passwords do not match"] } },
+    };
+  }
     const schema = z.object({
         username: z.string().min(1, { message: "Username is required" }),
          password: z.string().min(1, { message: "Password is required" }),
@@ -57,10 +63,15 @@ export async function signUp(formState, formData) {
     }
 
     const age = calculateAge(birthdate)
-
-    const response = await fetch(`http://localhost:4000/api/v1/users`, {
+ try {
+    const base = (process.env.AUTH_API_URL || "").replace(/\/+$/, "");
+    if (!base) {
+      return { success: false, error: "Missing AUTH_API_URL" };
+    }
+    const response = await fetch(`${base}/api/v1/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+         cache: "no-store",
         body: JSON.stringify({
             username,
             password,

@@ -146,13 +146,33 @@ export default async function getAllClasses() {
     return <div>Missing NEXT_PUBLIC_API_URL</div>;
   }
   
-  // Fetch alle classer
-  const classes = await serverFetch("/classes");
-  // console.log("classsss", classes);
+  try {
+                 // Fetch alle classer--------- Fetch all classes
+    const classes = await serverFetch("/classes");
+    if (!Array.isArray(classes) || classes.length === 0) {
+      return <div>No classes available.</div>;
+    }
 
-    // Pick a random class ---- vælg et tilfældig klasse
-  const randomNumber = Math.floor(Math.random() * classes.length);
-  const randomImage = await serverFetch(`/classes/${randomNumber}`);
+                  // vælg et tilfældig klasse---------Pick a random class by index, then use its real id
+    const randomIndex = Math.floor(Math.random() * classes.length);
+    const randomClass = classes[randomIndex];
+    const randomId = randomClass?.id ?? randomClass?._id ?? randomClass?.slug;
+    let randomImageData = null;
+
+    if (randomId != null) {
+                       // If your API supports /classes/:id for details:
+      randomImageData = await serverFetch(`/classes/${randomId}`);
+    } else {
+                       // Fallback: use the picked class as-is
+      randomImageData = randomClass;
+    }
+  // // Fetch alle classer
+  // const classes = await serverFetch("/classes");
+  // // console.log("classsss", classes);
+
+  //   // Pick a random class ---- vælg et tilfældig klasse
+  // const randomNumber = Math.floor(Math.random() * classes.length);
+  // const randomImage = await serverFetch(`/classes/${randomNumber}`);
 
   return (
     <>
@@ -206,4 +226,7 @@ export default async function getAllClasses() {
       </main>
     </>
   );
+  } catch {
+    return <div>Unable to load classes right now.</div>;
+  }
 }
