@@ -63,37 +63,38 @@ export async function signUp(formState, formData) {
     }
 
     const age = calculateAge(birthdate)
- try {
-    const base = (process.env.AUTH_API_URL || "").replace(/\/+$/, "");
-    if (!base) {
-      return { success: false, error: "Missing AUTH_API_URL" };
-    }
-    const response = await fetch(`${base}/api/v1/users`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-         cache: "no-store",
-        body: JSON.stringify({
-            username,
-            password,
-            firstname,
-            lastname,
-            age,
-            role: 'default',
+    
+    try {
+        const base = (process.env.AUTH_API_URL || "").replace(/\/+$/, "");
+        if (!base) {
+            return { success: false, error: "Missing AUTH_API_URL" };
+        }
+        const response = await fetch(`${base}/api/v1/users`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            cache: "no-store",
+            body: JSON.stringify({
+                username,
+                password,
+                firstname,
+                lastname,
+                age,
+                role: 'default',
+            })
         })
-    })
 
-    if (!response.ok) {
-        throw new Error('Failed to sign up')
+        if (!response.ok) {
+            throw new Error('Failed to sign up')
+        }
+
+        const result = await response.json()
+        // console.log('Sign up successful', result)
+
+        if (response.ok) {
+            redirect('/loginForm')
+        }
+
+    } catch (e) {
+        return { success: false, error: 'Internal server error' };
     }
-
-    const result = await response.json()
-    // console.log('Sign up successful', result)
-
-    if (response.ok) {
-        redirect('/loginForm')
-    }
-
-  } catch (e) {
-    return { success: false, error: 'Internal server error' };
-  }
-} 
+}
