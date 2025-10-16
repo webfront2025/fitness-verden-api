@@ -6,11 +6,12 @@
 function buildUrl(pathOrUrl) {
   // If pathOrUrl is already absolute (http/https), use it as-is
   if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
-  // Otherwise, join with API_BASE_URL
-  if (!API_BASE_URL) throw new Error("Missing NEXT_PUBLIC_API_URL");
-  const base = API_BASE_URL.replace(/\/+$/, "");
+  // Otherwise, prefer env base; fall back to internal API
+  const base = (API_BASE_URL && API_BASE_URL.replace(/\/+$/, "")) || "";
   const path = String(pathOrUrl || "").replace(/^\/+/, "");
-  return `${base}/${path}`;
+  if (base) return `${base}/${path}`;
+  // If no external base set, assume calls are to internal Next.js API
+  return `/api/${path}`;
 }
 
 
