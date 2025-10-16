@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ['localhost'], // Tillad billeder fra localhost
+      domains: ['localhost', 'trainerapi.onrender.com'],
     },
   };
  
