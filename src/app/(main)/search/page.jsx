@@ -13,11 +13,13 @@ export const metadata = {
   description: "Search different training classes.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function Search({ searchParams }) {
   
   let searchQuery = (await searchParams).search;
-  let alleAktiviter = await serverFetch("http://localhost:4000/api/v1/classes");
-  let alleTrainers = await serverFetch("http://localhost:4000/api/v1/trainers");
+  let alleAktiviter = await serverFetch("/classes");
+  let alleTrainers = await serverFetch("/trainers");
 console.log("ssearchh:",searchQuery);
 
 

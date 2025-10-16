@@ -1,7 +1,6 @@
 import ClassesCard from "@/components/Classes-card";
 import BurgerMenu from "@/components/BurgerMenu";
 import { serverFetch } from "@/lib/server-fetch";
-import { API_BASE_URL } from "@/constants";
 import Link from "next/link";
 import Image from "next/image";
 import { Triangle } from "lucide-react";
@@ -13,8 +12,10 @@ export const metadata = {
 
 // Fetch alle classer
 // gammel kode
+export const dynamic = "force-dynamic";
+
 export default async function getAllClasses() {
-  const classes = await serverFetch(`${API_BASE_URL}`);
+  const classes = await serverFetch("/classes");
   // console.log("classsss", classes);
   const randomIndex = Math.floor(Math.random() * classes.length);
   const randomClass = classes[randomIndex];

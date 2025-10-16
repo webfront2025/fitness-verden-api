@@ -131,13 +131,15 @@ import SignupButton from "@/components/SignupButton";
 import { currentUser } from "@/lib/currentUser";
 import Rating from "@/components/Rating";
 
+export const dynamic = "force-dynamic";
+
 export default async function generateMetadata({ params }) {
 	const aktId = (await params).id
 // Fetch classe detailer / side med detaljer for de enkelte hold
 // gammel kode
-const aktivites = await serverFetch(`http://localhost:4000/api/v1/classes/${aktId}`);
+const aktivites = await serverFetch(`/classes/${aktId}`);
 const trainerId = aktivites.trainer.id;
-const trainerFetch = await serverFetch(`http://localhost:4000/api/v1/trainers/${trainerId}`);
+const trainerFetch = await serverFetch(`/trainers/${trainerId}`);
 const user = await currentUser();
 
 const userIsSignedUp = user?.classes?.some((cls) => cls.id == aktId);
