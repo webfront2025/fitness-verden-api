@@ -1,7 +1,8 @@
 'use server'
-import { z } from "zod";
-import { redirect } from 'next/navigation';
-
+// import { z } from "zod";
+// import { redirect } from 'next/navigation';
+ import z from 'zod'
+ import { redirect } from 'next/navigation'
 export async function signUp(formState, formData) {
     const username = formData.get('username')
     const password = formData.get('password')
